@@ -52,3 +52,5 @@ switch (keyStroke.getCharacter()) {
 - [ ] Perfect Clear
 - [ ] 180° Spins
 - [ ] Custom Soft Drop Speed
+- [ ] Lock Out
+- [ ] Top Out
