@@ -209,4 +209,8 @@ public class TetriminoCoordinater {
 
     }
 
+    public void stopInputPoller(){
+        input.stop();
+    }
+
 }

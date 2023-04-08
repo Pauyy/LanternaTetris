@@ -12,12 +12,14 @@ public class InputPoller implements Runnable{
 
     private Stack<KeyStroke> stack;
     private Thread selfThread;
+    private boolean running;
 
     public InputPoller(Terminal terminal){
         this.terminal = terminal;
         stack = new Stack<>();
         selfThread = new Thread(this);
         selfThread.start();
+        running = true;
     }
 
 
@@ -31,7 +33,7 @@ public class InputPoller implements Runnable{
 
     @Override
     public void run() {
-        while (true) {
+        while (running) {
             KeyStroke polled;
             try {
                 polled = terminal.pollInput();
@@ -41,6 +43,10 @@ public class InputPoller implements Runnable{
                 e.printStackTrace();
             }
         }
+    }
+
+    public void stop(){
+        running = false;
     }
 
 }
