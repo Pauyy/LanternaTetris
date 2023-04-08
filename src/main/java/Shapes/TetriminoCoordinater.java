@@ -38,7 +38,7 @@ public class TetriminoCoordinater {
             }
         }
         //Process User Input
-        KeyStroke keyStroke = input.poll();
+        KeyStroke keyStroke = input.get();
         if (keyStroke != null) {
             Coordinates[] oldCoordinates = tetrimino.getCoordinates();
             Coordinates[] newCoordinates = null;
