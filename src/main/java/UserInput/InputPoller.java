@@ -1,8 +1,10 @@
 package UserInput;
 
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Stack;
 
@@ -23,12 +25,38 @@ public class InputPoller implements Runnable{
     }
 
 
-    public KeyStroke get(){
+    public KeyStroke[] get(){
         if(stack.isEmpty())
             return null;
-        KeyStroke keyStroke = stack.pop();
+        KeyStroke[] keyStrokes = new KeyStroke[2];
+        boolean directional = false;
+        boolean rotation = false;
+        for(KeyStroke ks : stack){
+            if(ks.getCharacter() != null){
+                if(ks.getCharacter() == ' '){
+                    keyStrokes[1] = new KeyStroke(KeyType.F19);
+                    directional = true;
+                } else {
+                    keyStrokes[0] = ks;
+                    rotation = true;
+                }
+            } else if(ks.getKeyType() == KeyType.ArrowUp){
+                keyStrokes[0] = KeyStroke.fromString("x");
+                rotation = true;
+            } else {
+                keyStrokes[1] = ks;
+                directional = true;
+            }
+            if(rotation && directional)
+                break;
+        }
+        if(!rotation)
+            keyStrokes[0] = KeyStroke.fromString(" ");
+        if(!directional)
+            keyStrokes[1] = new KeyStroke(KeyType.Escape);
+
         stack.clear();
-        return keyStroke;
+        return keyStrokes;
     }
 
     @Override
