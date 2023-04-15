@@ -38,19 +38,29 @@ public class TetriminoCoordinater {
             }
         }
         //Process User Input
-        KeyStroke keyStroke = input.poll();
-        if (keyStroke != null) {
+        KeyStroke[] keyStrokes = input.get();
+        if (keyStrokes != null) {
             Coordinates[] oldCoordinates = tetrimino.getCoordinates();
             Coordinates[] newCoordinates = null;
-            switch (keyStroke.getCharacter()) {
-                case 'd' -> newCoordinates = tetrimino.moveRight();
-                case 'a' -> newCoordinates = tetrimino.moveLeft();
-                case 'w' -> newCoordinates = tetrimino.rotateRight();
-                case 'z' -> newCoordinates = tetrimino.rotateLeft();
-                case 'k' -> hardDrop(tetrimino);
-                case 's' -> delay = 1;
-                default -> delay = 48;
+            //Check for rotation
+            KeyStroke keyStroke = keyStrokes[0];
+            if(keyStroke.getCharacter() != null){
+                switch (keyStroke.getCharacter()) {
+                    case 'x' -> newCoordinates = tetrimino.rotateRight();
+                    case 'y', 'z' -> newCoordinates = tetrimino.rotateLeft();
+                }
             }
+            //check for non-directional input
+            keyStroke = keyStrokes[1];
+            if(keyStroke.getKeyType() != null){
+                switch (keyStroke.getKeyType()){
+                    case ArrowRight -> newCoordinates = tetrimino.moveRight();
+                    case ArrowLeft -> newCoordinates = tetrimino.moveLeft();
+                    case ArrowDown -> delay = 1;
+                    case F19 -> hardDrop(tetrimino); //Space
+                }
+            }
+
             boolean valid = isNextPosValid(oldCoordinates, newCoordinates);
             if (valid) {
                 System.out.println(Arrays.toString(oldCoordinates) + " ; " + Arrays.toString(newCoordinates) + " ; " + tetrimino.lastAction + " ; " + tetrimino.orientation);
@@ -207,6 +217,10 @@ public class TetriminoCoordinater {
             board[col][row] = 0;
         }
 
+    }
+
+    public void stopInputPoller(){
+        input.stop();
     }
 
 }

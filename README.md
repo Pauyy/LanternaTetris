@@ -2,31 +2,21 @@
 
 
 ## Controls
-The Controls are safed in ```tetriminoCoordinater```
-```java
-switch (keyStroke.getCharacter()) {
-    case 'd' -> newCoordinates = tetrimino.moveRight();
-    case 'a' -> newCoordinates = tetrimino.moveLeft();
-    case 'w' -> newCoordinates = tetrimino.rotateRight();
-    case 'z' -> newCoordinates = tetrimino.rotateLeft();
-    case 'k' -> hardDrop(tetrimino);
-    case 's' -> delay = 1;
-    default -> delay = 48;
-}
-```
+The Controls are saved in ```tetriminoCoordinater```
+
 |Key|Action|
 |---|---|
-| d | Move Right|
-| a | Move Left|
-| w | Rotate Right|
-| z | Rotate Left|
-| s | Soft Drop|
-| k | Hard Drop|
+| → | Move Right|
+| ← | Move Left|
+| ↑, x | Rotate Right|
+| z, y | Rotate Left|
+| ↓ | Soft Drop|
+| space | Hard Drop|
 
 
 ## Features
 - Right-handed Nintendo Rotation System
-- Completly Random Tetrimino Spawns
+- Completely Random Tetrimino Spawns
 - Game Over Screen
 - Hard Drop
 - Soft Drops
@@ -35,11 +25,12 @@ switch (keyStroke.getCharacter()) {
 
 
 ## Things to add
+- [x] Slightly Better Input Handling
 - [ ] Good Input Handling
 - [ ] Delayed Auto Shift
 - [ ] Tetrimino Preview
 - [ ] Tetrimino Hold
-- [ ] Tetrimino Frequenzy Statistics
+- [ ] Tetrimino Frequency Statistics
 - [ ] Points
 - [ ] Auto Repeat Rate
 - [ ] Line Clear Animations

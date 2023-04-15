@@ -38,6 +38,7 @@ public class GameScreen {
             }
         }
         renderer.renderGameOver();
+        tetriminoCoordinater.stopInputPoller();
         Thread.sleep(5000);
     }
 
