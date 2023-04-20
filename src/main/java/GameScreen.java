@@ -8,16 +8,17 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
+
 public class GameScreen {
 
     Terminal terminal;
 
-    public GameScreen() throws IOException {
-        this.terminal = new DefaultTerminalFactory().createTerminal();
+    public GameScreen() {
+        this.terminal = new DefaultTerminalFactory().createSwingTerminal();
+        makeWindowVisible(terminal);
     }
 
     public void create() throws IOException, InterruptedException {
-        terminal.enterPrivateMode();
         terminal.setCursorVisible(false);
 
         Board board = new Board();
@@ -44,5 +45,10 @@ public class GameScreen {
 
     public void close() throws IOException{
         terminal.close();
+    }
+
+
+    private void makeWindowVisible(Terminal terminal) {
+        ((java.awt.Window) terminal).setVisible(true);
     }
 }
