@@ -1,80 +1,48 @@
 package UserInput;
 
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
+import javax.swing.*;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.IOException;
-import java.util.Stack;
+import java.util.Map;
 
-public class InputPoller implements Runnable{
+public class InputPoller{
 
-    private final Terminal terminal;
+    private KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
 
-    private Stack<KeyStroke> stack;
-    private Thread selfThread;
-    private boolean running;
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            inputMap[e.getKeyCode()] = true;
+        }
+        
+        @Override
+        public void keyReleased(KeyEvent e) {
+            inputMap[e.getKeyCode()] = false;
+            hold[e.getKeyCode()] = 0;
+        }
+    };
+    private final boolean[] inputMap = new boolean[256];
+    private final int[] hold = new int[256];
 
     public InputPoller(Terminal terminal){
-        this.terminal = terminal;
-        stack = new Stack<>();
-        selfThread = new Thread(this);
-        selfThread.start();
-        running = true;
+        ((JFrame) terminal).getContentPane().getComponents()[0].addKeyListener(keyListener);
     }
 
-
-    public KeyStroke[] get(){
-        if(stack.isEmpty())
-            return null;
-        KeyStroke[] keyStrokes = new KeyStroke[2];
-        boolean directional = false;
-        boolean rotation = false;
-        for(KeyStroke ks : stack){
-            if(ks.getCharacter() != null){
-                if(ks.getCharacter() == ' '){
-                    keyStrokes[1] = new KeyStroke(KeyType.F19);
-                    directional = true;
-                } else {
-                    keyStrokes[0] = ks;
-                    rotation = true;
-                }
-            } else if(ks.getKeyType() == KeyType.ArrowUp){
-                keyStrokes[0] = KeyStroke.fromString("x");
-                rotation = true;
-            } else {
-                keyStrokes[1] = ks;
-                directional = true;
-            }
-            if(rotation && directional)
-                break;
-        }
-        if(!rotation)
-            keyStrokes[0] = KeyStroke.fromString(" ");
-        if(!directional)
-            keyStrokes[1] = new KeyStroke(KeyType.Escape);
-
-        stack.clear();
-        return keyStrokes;
-    }
-
-    @Override
-    public void run() {
-        while (running) {
-            KeyStroke polled;
-            try {
-                polled = terminal.pollInput();
-                if (polled != null)
-                    stack.add(polled);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void stop(){
-        running = false;
+    public Object[] get(){
+        //When ever the Inputs get requested (once per frame as expected) evry one that is aleready hold is hold for another consecutive frame
+        //If the inputs get requestet two times per frame this will fail
+        for(int i = 0; i < hold.length; i++)
+            if(inputMap[i])
+                hold[i]++;
+        Object[] o = new Object[2];
+        o[0] = inputMap;
+        o[1] = hold;
+        return o;
     }
 
 }
