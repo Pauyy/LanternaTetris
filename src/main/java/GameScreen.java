@@ -2,16 +2,11 @@ import Elements.Board;
 import Graphic.Renderer;
 import Shapes.TetriminoCoordinater;
 import UserInput.InputPoller;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminal;
-import com.googlecode.lanterna.terminal.swing.SwingTerminalFrame;
 
-import javax.swing.*;
-import java.awt.event.*;
 import java.io.IOException;
-import java.util.Arrays;
+
 
 
 public class GameScreen {
