@@ -22,6 +22,8 @@ The Controls are saved in ```tetriminoCoordinater```
 - Soft Drops
 - Block Out
 - 10x22 Board
+- DAS with 16 Frames delay
+- ARR with 6  Frames delay
 
 
 ## Things to add
