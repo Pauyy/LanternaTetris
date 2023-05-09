@@ -25,8 +25,7 @@ The Controls are saved in ```tetriminoCoordinater```
 
 
 ## Things to add
-- [x] Slightly Better Input Handling
-- [ ] Good Input Handling
+- [X] Good Input Handling
 - [ ] Delayed Auto Shift
 - [ ] Tetrimino Preview
 - [ ] Tetrimino Hold
