@@ -3,9 +3,6 @@ package Shapes;
 import Elements.Board;
 import RNG.RandomTetriminoGenerator;
 import UserInput.InputPoller;
-import com.googlecode.lanterna.input.KeyStroke;
-
-import java.util.Arrays;
 
 
 public class TetriminoCoordinater {
@@ -15,7 +12,7 @@ public class TetriminoCoordinater {
     private final InputPoller input;
     private int frame = 0;
     private final RandomTetriminoGenerator rng;
-    private int delay = 12;
+    private int gravity = 12;
 
     public TetriminoCoordinater(Board board, InputPoller input){
         this.board = board;
@@ -38,49 +35,69 @@ public class TetriminoCoordinater {
             }
         }
         //Process User Input
-        KeyStroke[] keyStrokes = input.get();
-        if (keyStrokes != null) {
-            Coordinates[] oldCoordinates = tetrimino.getCoordinates();
-            Coordinates[] newCoordinates = null;
-            //Check for rotation
-            KeyStroke keyStroke = keyStrokes[0];
-            if(keyStroke.getCharacter() != null){
-                switch (keyStroke.getCharacter()) {
-                    case 'x' -> newCoordinates = tetrimino.rotateRight();
-                    case 'y', 'z' -> newCoordinates = tetrimino.rotateLeft();
-                }
-            }
-            //check for non-directional input
-            keyStroke = keyStrokes[1];
-            if(keyStroke.getKeyType() != null){
-                switch (keyStroke.getKeyType()){
-                    case ArrowRight -> newCoordinates = tetrimino.moveRight();
-                    case ArrowLeft -> newCoordinates = tetrimino.moveLeft();
-                    case ArrowDown -> delay = 1;
-                    case F19 -> hardDrop(tetrimino); //Space
-                }
-            }
+        Object[] completeInputs = input.get();
+        boolean[] pressedButtons = (boolean[]) completeInputs[0];
+        int[] holdTime = (int[]) completeInputs[1];
 
-            boolean valid = isNextPosValid(oldCoordinates, newCoordinates);
-            if (valid) {
-                System.out.println(Arrays.toString(oldCoordinates) + " ; " + Arrays.toString(newCoordinates) + " ; " + tetrimino.lastAction + " ; " + tetrimino.orientation);
-                tetrimino.updatePosition();
-                updateBoard(oldCoordinates, newCoordinates);
+        Coordinates[] oldCoordinates = tetrimino.getCoordinates();
+        Coordinates[] newCoordinates = null;
+
+        //Find out new location
+        if(pressedButtons[88] || pressedButtons[89] || pressedButtons[90] || pressedButtons[38]) {//Rotation?
+            if((pressedButtons[38] || pressedButtons[88]) && (holdTime[38] == 1 || holdTime[88] == 1)){//↑ or x
+                newCoordinates = tetrimino.rotateRight();
+            } else if((pressedButtons[89] || pressedButtons[90]) && (holdTime[89] == 1 || holdTime[90] == 1)){// y or z
+                newCoordinates = tetrimino.rotateLeft();
             }
-        } else {
-            delay = 48;
+        }
+        updateTetriminoPositionIfValid(oldCoordinates, newCoordinates);
+
+        oldCoordinates = tetrimino.getCoordinates();
+        newCoordinates = null;
+        if(pressedButtons[37] || pressedButtons[39]) {//Directional
+            if(pressedButtons[37] && pressedButtons[39]){
+                if(holdTime[37] < holdTime[39]) {
+                    if ((holdTime[37] == 1 || (holdTime[37] > 16 && (((holdTime[37] + 2) % 6) == 0))))
+                        newCoordinates = tetrimino.moveLeft();
+                }else {
+                    if ((holdTime[39] == 1 || (holdTime[39] > 16 && (((holdTime[39] + 2) % 6) == 0))))
+                        newCoordinates = tetrimino.moveRight();
+                }
+            } else if(pressedButtons[37] && (holdTime[37] == 1 || (holdTime[37] > 16 && (((holdTime[37] + 2) % 6) == 0)))){
+                //When Left is pressed for the first frame, move
+                //If its hold for more than one frame we have to check if it reaches DAS
+                //If it reaches DAS we have to check for ARR
+                //But this looks still horrible
+                newCoordinates = tetrimino.moveLeft();
+                //                                                               DAS                        ARR
+            } else if(pressedButtons[39] && (holdTime[39] == 1 || (holdTime[39] > 16 && (((holdTime[39] + 2) % 6) == 0)))){
+                newCoordinates = tetrimino.moveRight();
+            }
+        }
+        updateTetriminoPositionIfValid(oldCoordinates, newCoordinates);
+
+        oldCoordinates = tetrimino.getCoordinates();
+        newCoordinates = null;
+        if(pressedButtons[32] && holdTime[32] == 1){
+            hardDrop(tetrimino);
         }
 
-        if(frame > delay && tetrimino != null){ //48 Frames sind vorbei, das Tetrimino muss ein Feld runter
+        if(pressedButtons[40]){
+            if(holdTime[40] == 1){
+                newCoordinates = tetrimino.moveDown();
+            } else if((holdTime[40] % (gravity / 2)) == 0){
+                newCoordinates = tetrimino.moveDown();
+            }
+        }
+        updateTetriminoPositionIfValid(oldCoordinates, newCoordinates);
 
-            Coordinates[] oldCoordinates = tetrimino.getCoordinates();
-            Coordinates[] newCoordinates = tetrimino.moveDown();
-            boolean valid = isNextPosValid(oldCoordinates, newCoordinates);
-            if(valid) {
-                tetrimino.updatePosition();
-                updateBoard(oldCoordinates, newCoordinates);
-            } else {
-                System.out.println("Invalid place after move down, lock piece");
+
+        if(frame > gravity && tetrimino != null) { //When the frame exceeds the gravity the tetrimino falls one place down
+            oldCoordinates = tetrimino.getCoordinates();
+            newCoordinates = tetrimino.moveDown();
+            boolean valid = updateTetriminoPositionIfValid(oldCoordinates, newCoordinates);
+            if(!valid){
+                //System.out.println("Invalid place after move down, lock piece");
                 tetrimino = null;
                 checkAndClearLines();
             }
@@ -109,6 +126,15 @@ public class TetriminoCoordinater {
             System.err.println("Das bedeutet Top out");
             return false;
         }
+    }
+
+    private boolean updateTetriminoPositionIfValid(Coordinates[] oldCoordinates, Coordinates[] newCoordinates){
+        boolean valid = isNextPosValid(oldCoordinates, newCoordinates);
+        if (valid) {
+            tetrimino.updatePosition();
+            updateBoard(oldCoordinates, newCoordinates);
+        }
+        return valid;
     }
 
     private void updateBoard(Coordinates[] oldCoordinates, Coordinates[] newCoordinates){
@@ -219,8 +245,5 @@ public class TetriminoCoordinater {
 
     }
 
-    public void stopInputPoller(){
-        input.stop();
-    }
 
 }

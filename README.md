@@ -22,11 +22,12 @@ The Controls are saved in ```tetriminoCoordinater```
 - Soft Drops
 - Block Out
 - 10x22 Board
+- DAS with 16 Frames delay
+- ARR with 6  Frames delay
 
 
 ## Things to add
-- [x] Slightly Better Input Handling
-- [ ] Good Input Handling
+- [X] Good Input Handling
 - [ ] Delayed Auto Shift
 - [ ] Tetrimino Preview
 - [ ] Tetrimino Hold
