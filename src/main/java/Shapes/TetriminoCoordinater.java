@@ -1,7 +1,8 @@
 package Shapes;
 
 import Elements.Board;
-import RNG.RandomTetriminoGenerator;
+import RNG.PseudoRandom;
+import RNG.RandomTetrominoGenerator;
 import UserInput.InputPoller;
 
 
@@ -11,12 +12,12 @@ public class TetriminoCoordinater {
     private final Board board;
     private final InputPoller input;
     private int frame = 0;
-    private final RandomTetriminoGenerator rng;
+    private final RandomTetrominoGenerator rng;
     private int gravity = 12;
 
     public TetriminoCoordinater(Board board, InputPoller input){
         this.board = board;
-        rng = new RandomTetriminoGenerator();
+        rng = new PseudoRandom();
         this.input = input;
     }
 
@@ -28,7 +29,7 @@ public class TetriminoCoordinater {
         frame++;
         //Check if we have a current Piece
         if (tetrimino == null) {
-            tetrimino = rng.getNewTetrimino();
+            tetrimino = rng.getNextTetromino();
             boolean valid = spawnTetrimino();
             if (!valid) {
                 return true;
