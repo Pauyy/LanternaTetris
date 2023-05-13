@@ -11,6 +11,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class Renderer {
@@ -23,6 +24,36 @@ public class Renderer {
 
     }
 
+    private int[][][] tetrominos = new int[][][]{
+            {
+                    {0,1,1,0},
+                    {0,1,1,0}
+            },
+            {
+                    {1,1,1,1},
+                    {0,0,0,0}
+            },
+            {
+                    {0,1,0,0},
+                    {1,1,1,0}
+            },
+            {
+                    {0,0,1,0},
+                    {1,1,1,0}
+            },
+            {
+                    {1,0,0,0},
+                    {1,1,1,0}
+            },
+            {
+                    {0,1,1,0},
+                    {1,1,0,0}
+            },
+            {
+                    {1,1,0,0},
+                    {0,1,1,0}
+            },
+    };
 
     public void renderScreen() throws IOException {
         TextGraphics textGraphics = terminal.newTextGraphics();
@@ -55,6 +86,31 @@ public class Renderer {
         textGraphics.setForegroundColor(TextColor.Factory.fromString("#ffa500"));
         textGraphics.putString(rX + 1 + 10, rY + 1 + 4, "Game Over");
 
+        terminal.flush();
+    }
+
+    public void renderTetrominoPreview(int[] identifier) throws IOException {
+        terminal.setForegroundColor(TextColor.ANSI.YELLOW_BRIGHT);
+        terminal.setBackgroundColor(TextColor.ANSI.BLUE);
+        int x = 52;
+        int y = 3;
+        terminal.setCursorPosition(x, y);
+        for(int i = 0; i < identifier.length; i++){ //every tetromino
+            TextColor color = getColorForBlock(identifier[i]);
+            terminal.setCursorPosition(x, y++);
+            for(int j = 0; j < 2; j++) {
+                terminal.setCursorPosition(x, y++);
+                for (int k = 0; k < 4; k++) {
+                    if (tetrominos[identifier[i]-1][j][k] == 0) {
+                        terminal.setBackgroundColor(TextColor.ANSI.BLACK);
+                    } else {
+                        terminal.setBackgroundColor(color);
+                    }
+                    terminal.putCharacter(' ');
+                    terminal.putCharacter(' ');
+                }
+            }
+        }
         terminal.flush();
     }
 
