@@ -2,6 +2,8 @@ package Shapes;
 
 import Elements.Board;
 import RNG.PseudoRandom;
+
+import RNG.PseudoRandom1History;
 import RNG.RandomTetrominoGenerator;
 import UserInput.InputPoller;
 
@@ -17,7 +19,7 @@ public class TetriminoCoordinater {
 
     public TetriminoCoordinater(Board board, InputPoller input){
         this.board = board;
-        rng = new PseudoRandom();
+        rng = new PseudoRandom1History();
         this.input = input;
     }
 
