@@ -66,10 +66,10 @@ public class TetriminoCoordinater {
             } else if(pressedButtons[37] && (holdTime[37] == 1 || (holdTime[37] > 16 && (((holdTime[37] + 2) % 6) == 0)))){
                 //When Left is pressed for the first frame, move
                 //If its hold for more than one frame we have to check if it reaches DAS
-                //If it reaches DAS we have to check for AAR
+                //If it reaches DAS we have to check for ARR
                 //But this looks still horrible
                 newCoordinates = tetrimino.moveLeft();
-                //                                                               DAS                        AAR
+                //                                                               DAS                        ARR
             } else if(pressedButtons[39] && (holdTime[39] == 1 || (holdTime[39] > 16 && (((holdTime[39] + 2) % 6) == 0)))){
                 newCoordinates = tetrimino.moveRight();
             }

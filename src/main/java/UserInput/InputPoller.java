@@ -37,8 +37,8 @@ public class InputPoller{
     }
 
     public Object[] get(){
-        //When ever the Inputs get requested (once per frame as expected) evry one that is aleready hold is hold for another consecutive frame
-        //If the inputs get requestet two times per frame this will fail
+        //When ever the Inputs get requested (once per frame as expected) every one that is already hold is hold for another consecutive frame
+        //If the inputs get requested two times per frame this will fail
         for(int i = 0; i < hold.length; i++)
             if(inputMap[i])
                 hold[i]++;
