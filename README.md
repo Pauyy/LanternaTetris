@@ -16,7 +16,7 @@ The Controls are saved in ```tetriminoCoordinater```
 
 ## Features
 - Right-handed Nintendo Rotation System
-- Completely Random Tetrimino Spawns
+- Different Tetromino Randomizer
 - Game Over Screen
 - Hard Drop
 - Soft Drops
@@ -46,3 +46,7 @@ The Controls are saved in ```tetriminoCoordinater```
 - [ ] Custom Soft Drop Speed
 - [ ] Lock Out
 - [ ] Top Out
+
+## Randomizer
+- True Pseudo Random Randomizer
+- NES Tetromino Randomizer
