@@ -1,7 +1,5 @@
 import Elements.Board;
 import Graphic.Renderer;
-import RNG.PseudoRandom1History;
-import RNG.RandomTetrominoGenerator;
 import Shapes.TetriminoCoordinater;
 import UserInput.InputPoller;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -33,7 +31,7 @@ public class GameScreen {
         while(true) {
             boolean topOut = tetriminoCoordinater.process();
             renderer.renderBoard(board);
-            renderer.renderTetrominoPreview(tetriminoCoordinater.getNextTetrominoIdentefier(5));
+            renderer.renderTetrominoPreview(tetriminoCoordinater.getNextTetrominoIdentifier(5));
             Thread.sleep(16);
 
             if(topOut) {

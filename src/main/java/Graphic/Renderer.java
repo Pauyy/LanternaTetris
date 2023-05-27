@@ -90,8 +90,6 @@ public class Renderer {
     }
 
     public void renderTetrominoPreview(int[] identifier) throws IOException {
-        terminal.setForegroundColor(TextColor.ANSI.YELLOW_BRIGHT);
-        terminal.setBackgroundColor(TextColor.ANSI.BLUE);
         int x = 52;
         int y = 3;
         terminal.setCursorPosition(x, y);

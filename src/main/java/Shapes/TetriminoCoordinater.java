@@ -255,7 +255,7 @@ public class TetriminoCoordinater {
      * @param count
      * @return array of identefier of the next spawned tetrominos
      */
-    public int[] getNextTetrominoIdentefier(int count){
+    public int[] getNextTetrominoIdentifier(int count){
         Queue<Tetrimino> queue = rng.getTetrominoQueue();
         int length = Math.min(count, queue.size());
         return queue.stream()
