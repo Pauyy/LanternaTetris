@@ -24,12 +24,12 @@ The Controls are saved in ```tetriminoCoordinater```
 - 10x22 Board
 - DAS with 16 Frames delay
 - ARR with 6  Frames delay
-
+- Tetromino Preview 
 
 ## Things to add
 - [X] Good Input Handling
 - [ ] Delayed Auto Shift
-- [ ] Tetrimino Preview
+- [X] Tetromino Preview
 - [ ] Tetrimino Hold
 - [ ] Tetrimino Frequency Statistics
 - [ ] Points
