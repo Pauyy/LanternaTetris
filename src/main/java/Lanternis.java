@@ -9,7 +9,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.awt.*;
 import java.io.IOException;
 
-public class Tetris {
+public class Lanternis {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         GameScreen gs = new GameScreen();

@@ -1,4 +1,4 @@
-# LanternaTetris
+# Lanternis
 
 
 ## Controls
