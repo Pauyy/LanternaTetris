@@ -31,7 +31,7 @@ public class GameScreen {
         while(true) {
             boolean topOut = tetriminoCoordinater.process();
             renderer.renderBoard(board);
-
+            renderer.renderTetrominoPreview(tetriminoCoordinater.getNextTetrominoIdentifier(5));
             Thread.sleep(16);
 
             if(topOut) {
